@@ -61,7 +61,7 @@ class Ingestion:
         Save the bars to a CSV in the format: date, open, highest, lowest, close, volume
         """
         if not bars:
-            print("No data to save.")
+            print("No data to save ")
             return
 
         df = pd.DataFrame([{
