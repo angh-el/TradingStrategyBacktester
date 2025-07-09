@@ -2,9 +2,7 @@
 
 
 void MarketData::addCandle(Candle candle){
-    // std::cout<<candle.open<<" ";
     candles.push_back(candle);
-    std::cout<<candles.size();
 }
 
 void MarketData::printCandles(){
@@ -18,5 +16,13 @@ void MarketData::printCandles(){
         std::cout<<" V: "<<candles.at(i).volume;
         std::cout<<"\n";
     }
+}
+
+Candle MarketData::getNextCandle(){
+    if(entryIndex >= candles.size()){
+        // just a way to represent that we have reached the end of the entries
+        return Candle{"", 0, 0, 0, 0, 0};
+    }
+    return candles.at(entryIndex++);
 }
 

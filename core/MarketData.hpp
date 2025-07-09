@@ -17,6 +17,7 @@ struct Candle{
 class MarketData{
 private:
     std::vector<Candle> candles;
+    int entryIndex = 0;
 
 public:
     void addCandle(Candle candle);
