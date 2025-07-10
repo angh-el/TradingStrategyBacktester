@@ -9,7 +9,7 @@
 
 namespace Indicators{
     
-    static int period = 5;
+    
 
     void update(Candle candle);
 
@@ -17,7 +17,8 @@ namespace Indicators{
     private:
         std::queue<double> window;
         double sum = 0;
-        double sma;   
+        double sma;
+        const int period = 10;   
     public:
         void calculate(Candle candle);
         double getSMA();
@@ -28,8 +29,31 @@ namespace Indicators{
         std::deque<double> window;
         double upperBand;
         double lowerBand;
-        int multiplier = 2;
+        const int multiplier = 2;
+        const int period = 10; 
     public:
+        void calculate(Candle candle);
+    };
+
+    class RelativeStrengthIndex{
+    private:
+        std::deque<double> window;
+        const int period = 7; 
+    public:
+        void calculate(Candle candle);
+    };
+
+    class Stochastic{
+    private:
+        double highestHigh = -100;
+        double lowestLow = 1000000;
+        std::queue<double> window;
+        double sum = 0;
+        int currentDayInPeriod = 0;
+        
+        const int percentKPeriod = 14;
+        const int percentDPeeriod = 3;
+    public: 
         void calculate(Candle candle);
     };
 
