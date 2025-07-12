@@ -45,14 +45,12 @@ namespace Indicators{
 
     class Stochastic{
     private:
-        double highestHigh = -100;
-        double lowestLow = 1000000;
-        std::queue<double> window;
-        double sum = 0;
-        int currentDayInPeriod = 0;
+        std::deque<Candle> candleWindow;
+        std::deque<double> percentKWindow;
+        double percentKSum = 0;
         
         const int percentKPeriod = 14;
-        const int percentDPeeriod = 3;
+        const int percentDPeriod = 3;
     public: 
         void calculate(Candle candle);
     };

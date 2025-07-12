@@ -104,18 +104,49 @@ void Indicators::RelativeStrengthIndex::calculate(Candle candle){
 
 }
 
-void Indicators::Stochastic::calculate(Candle candle){
-    lowestLow = std::min(lowestLow, candle.low);
-    highestHigh = std::max(highestHigh, candle.high);
-    // std::cout<<lowestLow<<" ";
-    if(currentDayInPeriod == percentKPeriod){
-        double percentK = ((candle.close - lowestLow) / (highestHigh - lowestLow) * 100);
+void Indicators::Stochastic::calculate(Candle candle) {
+    candleWindow.push_back(candle);
 
-        window.push(percentK);
-        currentDayInPeriod = 0;
-
-        std::cout<<"Percent K: "<<percentK<<"\n";
+    // Remove old candles to maintain window size
+    if (candleWindow.size() > percentKPeriod) {
+        candleWindow.pop_front();
     }
 
-    currentDayInPeriod++;
+    // Only calculate when we have enough data
+    if (candleWindow.size() == percentKPeriod) {
+        double lowestLow = candleWindow.front().low;
+        double highestHigh = candleWindow.front().high;
+
+        for (const auto& c : candleWindow) {
+            if (c.low < lowestLow) lowestLow = c.low;
+            if (c.high > highestHigh) highestHigh = c.high;
+        }
+
+        if (highestHigh == lowestLow) {
+            std::cout << "Flat range - skipping\n";
+            return;  // avoid divide by zero
+        }
+
+        double percentK = ((candle.close - lowestLow) / (highestHigh - lowestLow)) * 100.0;
+        std::cout << "Percent K: " << percentK << "\n";
+
+        // Update %D window
+        percentKWindow.push_back(percentK);
+        percentKSum += percentK;
+
+        if (percentKWindow.size() > percentDPeriod) {
+            percentKSum -= percentKWindow.front();
+            percentKWindow.pop_front();
+        }
+
+        if (percentKWindow.size() == percentDPeriod) {
+            double percentD = percentKSum / percentDPeriod;
+            
+            if (std::abs(percentD) < 1e-8){
+                percentD = 0.0; 
+            }
+            
+            std::cout << "Percent D: " << percentD << "\n";
+        }
+    }
 }
