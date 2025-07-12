@@ -1,8 +1,6 @@
 #include "Indicators.hpp"
 
 
-// int Indicators::period = 5;
-
 void Indicators::update(Candle candle){
     // Simpel moving average
     static SimpleMovingAverage sma;
@@ -19,6 +17,10 @@ void Indicators::update(Candle candle){
     // Stochastic
     static Stochastic s;
     s.calculate(candle);
+
+    // Average Directional Index
+    static AverageDirectionalIndex adx;
+    adx.calculate(candle);
 
 }
 
@@ -128,7 +130,7 @@ void Indicators::Stochastic::calculate(Candle candle) {
         }
 
         double percentK = ((candle.close - lowestLow) / (highestHigh - lowestLow)) * 100.0;
-        std::cout << "Percent K: " << percentK << "\n";
+        // std::cout << "Percent K: " << percentK << "\n";
 
         // Update %D window
         percentKWindow.push_back(percentK);
@@ -146,7 +148,81 @@ void Indicators::Stochastic::calculate(Candle candle) {
                 percentD = 0.0; 
             }
             
-            std::cout << "Percent D: " << percentD << "\n";
+            // std::cout << "Percent D: " << percentD << "\n";
         }
     }
+}
+
+
+double Indicators::AverageDirectionalIndex::trueRange(double high, double low, double prevClose) {
+    double hl = high - low;
+    double hc = std::abs(high - prevClose);
+    double lc = std::abs(low - prevClose);
+
+    return std::max(hl, std::max(hc, lc)); 
+}
+
+
+
+void Indicators::AverageDirectionalIndex::calculate(const Candle& candle) {
+    if (prevClose == 0.0) {
+        prevHigh = candle.high;
+        prevLow = candle.low;
+        prevClose = candle.close;
+        return; 
+    }
+
+    double upMove = candle.high - prevHigh;
+    double downMove = prevLow - candle.low;
+
+    double plusDM = 0.0;
+    double minusDM = 0.0;
+
+    if (upMove > downMove && upMove > 0)
+        plusDM = upMove;
+    else if (downMove > upMove && downMove > 0)
+        minusDM = downMove;
+
+    double tr = trueRange(candle.high, candle.low, prevClose);
+
+   
+    plusDMValues.push_back(plusDM);
+    minusDMValues.push_back(minusDM);
+    trValues.push_back(tr);
+
+    if (plusDMValues.size() > period) {
+        plusDMValues.pop_front();
+        minusDMValues.pop_front();
+        trValues.pop_front();
+    }
+
+    if (plusDMValues.size() == period) {
+        double sumTR = 0, sumPlusDM = 0, sumMinusDM = 0;
+        for (int i = 0; i < period; ++i) {
+            sumTR += trValues[i];
+            sumPlusDM += plusDMValues[i];
+            sumMinusDM += minusDMValues[i];
+        }
+
+        double plusDI = 100 * (sumPlusDM / sumTR);
+        double minusDI = 100 * (sumMinusDM / sumTR);
+
+        double dx = 100 * std::abs(plusDI - minusDI) / (plusDI + minusDI);
+        dxValues.push_back(dx);
+
+        if (dxValues.size() > period) dxValues.pop_front();
+
+        if (dxValues.size() == period) {
+            double adx = 0;
+            for (double val : dxValues) adx += val;
+            adx /= period;
+
+            std::cout << "ADX: " << adx << "\n";
+        }
+    }
+
+    // Update prevs
+    prevHigh = candle.high;
+    prevLow = candle.low;
+    prevClose = candle.close;
 }

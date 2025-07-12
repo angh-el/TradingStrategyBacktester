@@ -55,6 +55,26 @@ namespace Indicators{
         void calculate(Candle candle);
     };
 
+    class AverageDirectionalIndex {
+    private:
+        std::deque<Candle> candleWindow;
+        int period = 14;
+
+        double prevHigh = 0.0;
+        double prevLow = 0.0;
+        double prevClose = 0.0;
+
+        std::deque<double> trValues;
+        std::deque<double> plusDMValues;
+        std::deque<double> minusDMValues;
+
+        std::deque<double> dxValues;
+        double trueRange(double high, double low, double prevClose);
+    public:
+        void calculate(const Candle& candle);
+    };
+
+
 
 }
 
