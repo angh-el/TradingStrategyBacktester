@@ -9,6 +9,7 @@
 #include "MarketData.hpp"
 #include "CSVManager.hpp"
 #include "Indicators.hpp"
+#include "indicators/IIndicator.hpp"
 
 
 int main(){
@@ -18,15 +19,42 @@ int main(){
     CSVManager::parseCSV(&mdata, fp);
     // mdata.printCandles();
 
+    IndicatorManager inidcatorManager;
+
+    double sma;
+    double lowerbb;
+    double upperbb;
+    double stochasticK;
+    double stochasticD;
+    double rsi;
+    double adx;
 
     while(true){
         Candle candle = mdata.getNextCandle();
         if(candle.date.empty()){
-            // std::cout<<"end\n";
             break;
         }
 
-        Indicators::update(candle);
+        // inidcatorManager.update(candle);
+        // sma = inidcatorManager.sma.getSMA();
+        // lowerbb = inidcatorManager.bb.getLower();
+        // upperbb = inidcatorManager.bb.getUpper();
+        // stochasticK = inidcatorManager.stochastic.getPercentK();
+        // stochasticD = inidcatorManager.stochastic.getPercentD();
+        // rsi = inidcatorManager.rsi.getValue();
+        // adx = inidcatorManager.adx.getADX();
+        
+        // std::cout<<"date: "<<candle.date<<"\t";
+        // std::cout<<"SMA: "<<sma<<"\t";
+        // std::cout<<"lowerbb: "<<lowerbb<<"\t";
+        // std::cout<<"upperbb: "<<upperbb<<"\t";
+        // std::cout<<"stochasticK: "<<stochasticK<<"\t";
+        // std::cout<<"stochasticD: "<<stochasticD<<"\t";
+        // std::cout<<"rsi: "<<rsi<<"\t";
+        // std::cout<<"adx: "<<adx<<std::endl;
+        
+
+        // Indicators::update(candle);
 
     }
 

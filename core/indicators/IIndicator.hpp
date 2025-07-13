@@ -7,6 +7,9 @@
 #include <queue>
 #include <cmath>
 
+#include <vector>
+#include <memory>
+
 class IIndicator{
 public:
     virtual void update(const Candle &candle) = 0;
@@ -35,7 +38,7 @@ private:
     const int period;
     const int multiplier;
 public:
-    BollingerBands(int p = 10, int m) : period(p), multiplier(m) {}
+    BollingerBands(int p = 10, int m = 2) : period(p), multiplier(m) {}
     void update(const Candle& candle) override;
     double getUpper() const { return upperBand; }
     double getLower() const { return lowerBand; }
@@ -92,6 +95,24 @@ public:
     AverageDirectionalIndex(int p = 14) : period(p) {}
     void update(const Candle& candle) override;
     double getADX() const { return adx; }
+};
+
+
+// manager
+class IndicatorManager{
+private:
+    std::vector<std::unique_ptr<IIndicator>> indicators;
+public:
+    SimpleMovingAverage sma;
+    BollingerBands bb;
+    RelativeStrengthIndex rsi;
+    Stochastic stochastic;
+    AverageDirectionalIndex adx;
+
+    IndicatorManager();
+
+    void update(const Candle &candle);
+
 };
 
 

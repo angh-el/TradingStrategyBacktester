@@ -1,7 +1,24 @@
 #include "IIndicator.hpp"
 
 
-//
+
+// actual manager class
+IndicatorManager::IndicatorManager()
+    : sma(), bb(), rsi(), stochastic(), adx(){
+    
+    indicators.emplace_back(&sma);
+    indicators.emplace_back(&bb); 
+    indicators.emplace_back(&rsi); 
+    indicators.emplace_back(&stochastic);
+    indicators.emplace_back(&adx);  
+}
+
+void IndicatorManager::update(const Candle &candle){
+    for(auto &indicator:indicators){
+        indicator->update(candle);
+    }
+}
+
 
 
 
@@ -28,6 +45,7 @@ void SimpleMovingAverage::update(const Candle &candle){
 
 
 void BollingerBands::update(const Candle &candle){
+    // std::cout<<candle.date<<"\n";
     window.push_back(candle.close);
     if (window.size() > period){
         window.pop_front();
@@ -46,8 +64,13 @@ void BollingerBands::update(const Candle &candle){
         }
         double sd = sqrt(variance / period);
 
-        double upper = mean + multiplier * sd;
-        double lower = mean - multiplier * sd;
+        // double upper = mean + multiplier * sd;
+        // double lower = mean - multiplier * sd;
+        upperBand = mean + multiplier * sd;
+        lowerBand = mean - multiplier * sd;
+
+
+
         // std::cout<<"Standard Deviation: "<<sd<<"\n";
         // std::cout << "Mean: " << mean << " Upper: " << upper << " Lower: " << lower << "\n";
     }
@@ -81,7 +104,7 @@ void RelativeStrengthIndex::update(const Candle &candle){
         // double rs = (sumGains / period) / (sumLoses / period);
         
         // rsi = 100 - (100 / (1 + RS))
-        double rsi = 100 - (100 / (1 + rs));
+        rsi = 100 - (100 / (1 + rs));
 
         // std::cout<<"RSI: "<<rsi<<"\n";
     }
@@ -111,7 +134,7 @@ void Stochastic::update(const Candle &candle) {
             return;  // avoid divide by zero
         }
 
-        double percentK = ((candle.close - lowestLow) / (highestHigh - lowestLow)) * 100.0;
+        percentK = ((candle.close - lowestLow) / (highestHigh - lowestLow)) * 100.0;
         // std::cout << "Percent K: " << percentK << "\n";
 
         // Update %D window
@@ -124,7 +147,7 @@ void Stochastic::update(const Candle &candle) {
         }
 
         if (percentKWindow.size() == percentDPeriod) {
-            double percentD = percentKSum / percentDPeriod;
+            percentD = percentKSum / percentDPeriod;
             
             if (std::abs(percentD) < 1e-8){
                 percentD = 0.0; 
@@ -194,11 +217,11 @@ void AverageDirectionalIndex::update(const Candle& candle) {
         if (dxValues.size() > period) dxValues.pop_front();
 
         if (dxValues.size() == period) {
-            double adx = 0;
+            adx = 0;
             for (double val : dxValues) adx += val;
             adx /= period;
 
-            std::cout << "ADX: " << adx << "\n";
+            // std::cout << "ADX: " << adx << "\n";
         }
     }
 
