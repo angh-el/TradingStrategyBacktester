@@ -7,7 +7,7 @@
 // #include <queue>
 
 #include "MarketData.hpp"
-#include "CSVManager.hpp"
+#include "CSVManager/CSVManager.hpp"
 #include "indicators/IIndicator.hpp"
 
 #include "strategies/IStrategy.hpp"
