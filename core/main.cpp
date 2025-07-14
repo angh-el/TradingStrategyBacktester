@@ -8,8 +8,10 @@
 
 #include "MarketData.hpp"
 #include "CSVManager.hpp"
-#include "Indicators.hpp"
 #include "indicators/IIndicator.hpp"
+
+#include "strategies/IStrategy.hpp"
+#include "Broker.hpp"
 
 
 int main(){
@@ -29,13 +31,17 @@ int main(){
     double rsi;
     double adx;
 
+    SmaCrossStrategy strat;
+    Broker broker(1000);
+    Metrics metrics;
+
     while(true){
         Candle candle = mdata.getNextCandle();
-        if(candle.date.empty()){
-            break;
-        }
+        
+        if(candle.date.empty()) break;
+    
 
-        // inidcatorManager.update(candle);
+        inidcatorManager.update(candle);
         // sma = inidcatorManager.sma.getSMA();
         // lowerbb = inidcatorManager.bb.getLower();
         // upperbb = inidcatorManager.bb.getUpper();
@@ -54,9 +60,13 @@ int main(){
         // std::cout<<"adx: "<<adx<<std::endl;
         
 
-        // Indicators::update(candle);
+        Signal signal = strat.generateSignal(candle);
+        broker.executeTrade(signal, candle, metrics);
+        strat.setPositionOpen(broker.isInPosition());
 
     }
+
+    metrics.computeMetrics();
 
     return 0;
 }
