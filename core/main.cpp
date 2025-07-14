@@ -6,12 +6,12 @@
 #include <vector>
 // #include <queue>
 
-#include "MarketData.hpp"
-#include "CSVManager/CSVManager.hpp"
+#include "csvManager/MarketData.hpp"
+#include "csvManager/CSVManager.hpp"
 #include "indicators/IIndicator.hpp"
 
 #include "strategies/IStrategy.hpp"
-#include "Broker.hpp"
+
 
 
 int main(){
@@ -31,9 +31,7 @@ int main(){
     double rsi;
     double adx;
 
-    SmaCrossStrategy strat;
-    Broker broker(1000);
-    Metrics metrics;
+
 
     while(true){
         Candle candle = mdata.getNextCandle();
@@ -60,13 +58,8 @@ int main(){
         // std::cout<<"adx: "<<adx<<std::endl;
         
 
-        Signal signal = strat.generateSignal(candle);
-        broker.executeTrade(signal, candle, metrics);
-        strat.setPositionOpen(broker.isInPosition());
 
     }
-
-    metrics.computeMetrics();
 
     return 0;
 }

@@ -41,3 +41,28 @@ Signal SimpleMovingAverageCrossover::generateSignal(const Candle &candle, const 
     prevSlowSMA = currentSlowSMA;
     return Signal(SignalType::HOLD, candle.close, candle.date); 
 }
+
+std::string SimpleMovingAverageCrossover::getName() const{
+    std::stringstream ss;
+    ss << "SMA Crossover ("<<fastPeriod<<"/"<<slowPeriod<<")";
+    return ss.str();
+}
+
+void SimpleMovingAverageCrossover::reset(){
+    prevFastSMA = 0.0;
+    prevSlowSMA = 0.0;
+    hasPreviousValues = false;
+
+    fastSMA = std::make_unique<SimpleMovingAverage> (fastPeriod);
+    slowSMA = std::make_unique<SimpleMovingAverage> (slowPeriod);
+}
+
+bool SimpleMovingAverageCrossover::isBullishCrossover(double currentFast, double currentSlow, double prevFast, double prevSlow) const{
+    // bullish when fast was below slow BUT now fast is above slow
+    return (prevFast <= prevSlow) && (currentFast > currentSlow);
+}
+
+bool SimpleMovingAverageCrossover::isBearishCrossover(double currentFast, double currentSlow, double prevFast, double prevSlow) const{
+    // bearish when fast was above slow BUT now fast is below slow
+    return (prevFast <= prevSlow) && (currentFast > currentSlow);
+}

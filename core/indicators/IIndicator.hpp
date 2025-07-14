@@ -1,7 +1,7 @@
 #ifndef IINDICATOR_HPP
 #define IINDICATOR_HPP
 
-#include "../MarketData.hpp"
+#include "../csvManager/MarketData.hpp"
 
 #include <deque>
 #include <queue>

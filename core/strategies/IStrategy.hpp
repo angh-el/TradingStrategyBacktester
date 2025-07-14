@@ -1,7 +1,7 @@
 #ifndef ISTRATEGY_HPP
 #define ISTRATEGY_HPP
 
-#include "../MarketData.hpp"
+#include "../csvManager/MarketData.hpp"
 #include "../indicators/IIndicator.hpp"
 
 #include <string>
