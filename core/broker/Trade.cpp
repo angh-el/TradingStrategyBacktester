@@ -20,6 +20,7 @@ void Trade::calculateMetrics(){
         returnPercent = 0.0;
     }
 
+    // std::cout<<""
     isWinning = pnl > 0.0;
 }
 
@@ -29,4 +30,16 @@ Trade Trade::createFromPosition(const Position &position, double exitPrice, cons
     }
 
     return Trade(position.getEntryTime(), exitTime, position.getEntryPrice(), exitPrice, position.getQuantity(), position.getType(), position.getEntryBarIndex(), exitBarIndex);
+}
+
+Trade Trade::createPartialFromPosition(const Position& position, double exitPrice, const std::string& exitTime, int exitBarIndex, double partialQuantity){
+    if (!position.isOpen()) {
+        throw std::runtime_error("Cannot create trade from closed position");
+    }
+    
+    if (partialQuantity <= 0 || partialQuantity > position.getQuantity()) {
+        throw std::runtime_error("Invalid partial quantity");
+    }
+    
+    return Trade( position.getEntryTime(), exitTime, position.getEntryPrice(), exitPrice, partialQuantity, position.getType(),position.getEntryBarIndex(),exitBarIndex);
 }

@@ -22,9 +22,12 @@ struct BacktestConfig{
     double transactionCost;             // per trade cost
     double transactionCostRate;
     bool allowShortSelling;
+    bool allowPyramiding;
+    bool allowPartialSells;
+    double maxPositionSize;
 
     BacktestConfig(double capital = 10000.0)
-        : initialCapital(capital), sizingMethod(PositionSizingMethod::PERCENTAGE_CAPITAL), positionSize(1.0), transactionCost(0.0), transactionCostRate(0.0), allowShortSelling(false){}
+        : initialCapital(capital), sizingMethod(PositionSizingMethod::PERCENTAGE_CAPITAL), positionSize(1.0), transactionCost(0.0), transactionCostRate(0.0), allowShortSelling(false), allowPyramiding(true), allowPartialSells(true), maxPositionSize(3.0){}
 };
 
 class Backtester{
@@ -35,6 +38,7 @@ private:
     std::vector<Trade> trades;
 
     double currentCapital;
+    double lastPrice;
     std::vector<double> capitalHistory; 
     std::vector<double> equityHistory;      // capital + unrealised pnl
 
@@ -43,8 +47,12 @@ private:
 
     double calculateTransactionCost(double tradeValue) const;
     double calculatePositionSize(double price) const;
+    bool canAddToPosition() const;
     void executeEntry(const Signal &signal);
+    void executeShortEntry(const Signal &signal);
+    void executeAddToPosition(const Signal &signal);
     void executeExit(const Signal &signal);
+    void executePartialExit(const Signal &signal);
     void updateCapitalHistory(double currentPrice);
 
 public:

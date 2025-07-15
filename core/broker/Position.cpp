@@ -46,6 +46,54 @@ void Position::close(){
     entryBarIndex = 0;
 }
 
+void Position::addToLong(double price, double qty){
+    if(!isLong()){
+        throw std::runtime_error("Cannot add to long positon (not currently long)");
+    }
+
+    if(qty <= 0){
+        return;
+    }
+
+    double totalValue = (quantity * entryPrice) + (qty * price);
+    double newQuantity = quantity + qty;
+
+    entryPrice = totalValue / newQuantity;
+    quantity = newQuantity;
+}
+
+void Position::addToShort(double price, double qty) {
+    if (!isShort()) {
+        throw std::runtime_error("Cannot add to short position (not currently short)");
+    }
+    
+    if (qty <= 0) {
+        return; 
+    }
+    
+    double totalValue = (quantity * entryPrice) + (qty * price);
+    double newQuantity = quantity + qty;
+    
+    entryPrice = totalValue / newQuantity; 
+    quantity = newQuantity;
+}
+
+void Position::reducePosition(double qty) {
+    if (!isOpen()) {
+        throw std::runtime_error("Cannot reduce position (no position open)");
+    }
+    
+    if (qty <= 0) {
+        return; 
+    }
+    
+    if (qty >= quantity) {
+        close();
+    } else {
+        quantity -= qty;
+    }
+}
+
 double Position::getUnrealisedPnL(double currentPrice) const{
     if(!isOpen()) return 0.0;
 

@@ -20,7 +20,7 @@ private:
     double returnPercent;
     bool isWinning;
 
-    void calculateMetrics();
+    
 
 public:
     Trade(const std::string &entryT, const std::string &exitT, double entryP, double exitP, double qty,  PositionType type, int entryBar, int exitBar);
@@ -34,6 +34,7 @@ public:
     int getEntryBarIndex() const {return entryBarIndex;}
     int getExitBarIndex() const {return exitBarIndex;}
 
+    void calculateMetrics();
     double getPnL() const {return pnl;}
     double getReturnPercent() const {return returnPercent;}
     int getDurationBars() const {return exitBarIndex - entryBarIndex;}
@@ -44,7 +45,7 @@ public:
     bool isShortTrade() const {return tradeType == PositionType::SHORT;}
 
     static Trade createFromPosition(const Position &position, double exitPrice, const std::string &exitTime, int exitBarIndex);
-
+    static Trade createPartialFromPosition(const Position &position, double exitPrice, const std::string &exitTime, int exitBarIndex, double partialQuantity);
 };
 
 #endif

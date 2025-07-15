@@ -30,10 +30,14 @@ public:
 
     void openLong(double price, double qty, const std::string &time, int barIndex);
     void openShort(double price, double qty, const std::string &time, int barIndex);
+    void addToLong(double price, double qty);
+    void addToShort(double price, double qty);
+    void reducePosition(double qty);
     void close();
 
     double getUnrealisedPnL(double currentPrice) const;
     double getPositionValue(double currentPrice) const;
+    double getAverageEntryPrice() const {return entryPrice;}
 
     static double calculateQuantity(double capital, double price, double positionSizePercent = 1.0);
     static double calculateQuantityFixedAmount(double fixedAmount, double price);
