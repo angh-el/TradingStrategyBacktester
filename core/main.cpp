@@ -39,7 +39,8 @@ int main(){
     config.allowShortSelling = true;
     config.transactionCost = 0.0;
 
-    auto strategy =  std::make_unique<SimpleMovingAverageCrossover>(75,175);
+    // auto strategy =  std::make_unique<SimpleMovingAverageCrossover>(75,175);
+    auto strategy =  std::make_unique<StochasticOscillatorCrossover>(20, 2);
     Backtester backtester(std::move(strategy), config);
 
     while(true){

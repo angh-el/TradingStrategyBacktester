@@ -76,3 +76,57 @@ public:
 #endif
 
 
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+#ifndef STOCHASTICOSCILLATORCROSSOVER_HPP
+#define STOCHASTICOSCILLATORCROSSOVER_HPP
+
+#include "IStrategy.hpp"
+#include "../indicators/IIndicator.hpp"
+#include <memory>
+
+class StochasticOscillatorCrossover : public IStrategy {
+private:
+    int kPeriod;        
+    int dPeriod;        
+    double overboughtLevel;  
+    double oversoldLevel;    
+    
+    std::unique_ptr<Stochastic> stochastic;
+    
+    double prevK;
+    double prevD;
+    bool hasPreviousValues;
+    
+    bool isBullishCrossover(double currentK, double currentD, double prevK, double prevD) const;
+    bool isBearishCrossover(double currentK, double currentD, double prevK, double prevD) const;
+    bool isInOversoldZone(double k, double d) const;
+    bool isInOverboughtZone(double k, double d) const;
+
+public:
+    StochasticOscillatorCrossover(int kPer = 14, int dPer = 3, double overbought = 80.0, double oversold = 20.0);
+    ~StochasticOscillatorCrossover() = default;
+    
+    Signal generateSignal(const Candle &candle, const IndicatorManager &indicators) override;
+    std::string getName() const override;
+    void reset() override;
+    
+    // Getters
+    int getKPeriod() const { return kPeriod; }
+    int getDPeriod() const { return dPeriod; }
+    double getOverboughtLevel() const { return overboughtLevel; }
+    double getOversoldLevel() const { return oversoldLevel; }
+};
+
+#endif
