@@ -4,6 +4,7 @@
 #include "Position.hpp"
 #include <string>
 #include <stdexcept>
+#include <iostream>
 
 class Trade {
 private:

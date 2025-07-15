@@ -8,6 +8,7 @@ void Trade::calculateMetrics(){
     if(tradeType == PositionType::LONG){
         // long trade :. profit when exit price > entry price
         pnl = quantity * (exitPrice - entryPrice);
+        // std::cout<<pnl<<" "<<quantity<<" "<<exitPrice<<" "<<entryPrice<<" "<<entryTime<<" "<<exitTime<<"\n";
         returnPercent = ((exitPrice - entryPrice) / entryPrice) * 100.0;
     }
     else if(tradeType == PositionType::SHORT){

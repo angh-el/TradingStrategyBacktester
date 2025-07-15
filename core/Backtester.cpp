@@ -21,6 +21,13 @@
 
 //     Signal signal = strategy->generateSignal(candle, indicators);
     
+//     // if(signal.isBuy()  || signal.isSell())
+//     //     std::cout << "[DEBUG] Capital: " << currentCapital 
+//     //       << " | Position Qty: " << currentPosition.getQuantity() 
+//     //       << " | Entry: " << currentPosition.getEntryPrice() 
+//     //       << " | Signal: " << (signal.isBuy() ? "BUY" : signal.isSell() ? "SELL" : "HOLD") 
+//     //       << " | Date: " << candle.date << "\n";
+
 
 //     // if(signal.isBuy() && currentPosition.isClosed()){
 //     //     // std::cout<<"BUY\n";
@@ -34,7 +41,7 @@
 
 //     if (signal.isBuy()) {
 //         // std::cout<<"Buy\n";
-//         std::cout<<signal.timestamp<<"\n";
+//         // std::cout<<signal.timestamp<<"\n";
 //         if (currentPosition.isClosed()) {
 //             executeEntry(signal);
 //         } 
@@ -89,7 +96,7 @@
 //     // std::cout<<"yoo\n";
 //     try{
 //         if(signal.isBuy()){
-//             // std::cout<<signal.timestamp<<"\n";
+//             std::cout<<signal.timestamp<<"\n";
 //             currentPosition.openLong(signal.price, quantity, signal.timestamp, currentBarIndex);
 //         }
 
