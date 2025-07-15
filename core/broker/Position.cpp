@@ -15,7 +15,7 @@ bool Position::isShort() const{ return type == PositionType::SHORT;}
 bool Position::isClosed() const{ return type == PositionType::NONE;}
 
 void Position::openLong(double price, double qty, const std::string &time, int barIndex){
-    if(isOpen){
+    if(isOpen()){
         throw std::runtime_error("Cannot open long positon: position already open");
     }
 

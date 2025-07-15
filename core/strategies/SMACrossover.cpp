@@ -15,30 +15,35 @@ Signal SimpleMovingAverageCrossover::generateSignal(const Candle &candle, const 
     double currentFastSMA = fastSMA -> getSMA();
     double currentSlowSMA = slowSMA -> getSMA();
 
+    // std::cout<<"fast: "<<currentFastSMA<<" slow: "<<currentSlowSMA<<"\n";
+
     // at least two data points needed for crossover
     if(!hasPreviousValues){
         prevFastSMA = currentFastSMA;
         prevSlowSMA = currentSlowSMA;
         hasPreviousValues = true;
-
+        // std::cout<<"HOLD\n";
         return Signal(SignalType::HOLD, candle.close, candle.date);
     }
 
     if(isBullishCrossover(currentFastSMA, currentSlowSMA, prevFastSMA, prevSlowSMA)){
         prevFastSMA = currentFastSMA;
         prevSlowSMA = currentSlowSMA;
+        // std::cout<<"BUY\n";
         return Signal(SignalType::BUY, candle.close, candle.date);
     }
 
     else if(isBearishCrossover(currentFastSMA, currentSlowSMA, prevFastSMA, prevSlowSMA)){
         prevFastSMA = currentFastSMA;
         prevSlowSMA = currentSlowSMA;
+        // std::cout<<"SELL\n";
         return Signal(SignalType::SELL, candle.close, candle.date);
     }
 
     // if no crossover just hold
     prevFastSMA = currentFastSMA;
     prevSlowSMA = currentSlowSMA;
+    // std::cout<<"HOLD\n";
     return Signal(SignalType::HOLD, candle.close, candle.date); 
 }
 
@@ -64,5 +69,5 @@ bool SimpleMovingAverageCrossover::isBullishCrossover(double currentFast, double
 
 bool SimpleMovingAverageCrossover::isBearishCrossover(double currentFast, double currentSlow, double prevFast, double prevSlow) const{
     // bearish when fast was above slow BUT now fast is below slow
-    return (prevFast <= prevSlow) && (currentFast > currentSlow);
+    return (prevFast >= prevSlow) && (currentFast < currentSlow);
 }

@@ -2,16 +2,16 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
+#include <algorithm>
 #include <vector>
+#include <memory>
 // #include <queue>
 
 #include "csvManager/MarketData.hpp"
 #include "csvManager/CSVManager.hpp"
 #include "indicators/IIndicator.hpp"
-
 #include "strategies/IStrategy.hpp"
-
+#include "Backtester.hpp"
 
 
 int main(){
@@ -31,7 +31,13 @@ int main(){
     double rsi;
     double adx;
 
+    BacktestConfig config(1000.00);
+    config.sizingMethod = PositionSizingMethod::PERCENTAGE_CAPITAL;
+    config.positionSize = 0.005;
+    config.transactionCost = 0.0;
 
+    auto strategy =  std::make_unique<SimpleMovingAverageCrossover>(10,20);
+    Backtester backtester(std::move(strategy), config);
 
     while(true){
         Candle candle = mdata.getNextCandle();
@@ -40,6 +46,9 @@ int main(){
     
 
         inidcatorManager.update(candle);
+
+        backtester.processCandle(candle, inidcatorManager);
+        
         // sma = inidcatorManager.sma.getSMA();
         // lowerbb = inidcatorManager.bb.getLower();
         // upperbb = inidcatorManager.bb.getUpper();
@@ -60,6 +69,12 @@ int main(){
 
 
     }
+
+    // backtester.finalise();
+    std::cout<<"Total Return: "<<backtester.getTotalReturnPercent()<<"%"<<std::endl;
+    std::cout<<"Number of Trades: "<< backtester.getNumberOfTrades()<<std::endl;
+    std::cout<<"Final Capital: "<<backtester.getFinalCapital()<<"\n";
+    
 
     return 0;
 }
