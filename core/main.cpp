@@ -24,13 +24,13 @@ int main(){
 
     IndicatorManager inidcatorManager;
 
-    double sma;
-    double lowerbb;
-    double upperbb;
-    double stochasticK;
-    double stochasticD;
-    double rsi;
-    double adx;
+    // double sma;
+    // double lowerbb;
+    // double upperbb;
+    // double stochasticK;
+    // double stochasticD;
+    // double rsi;
+    // double adx;
 
     BacktestConfig config(10000.00);
     config.sizingMethod = PositionSizingMethod::PERCENTAGE_CAPITAL;
@@ -40,7 +40,8 @@ int main(){
     config.transactionCost = 0.0;
 
     // auto strategy =  std::make_unique<SimpleMovingAverageCrossover>(75,175);
-    auto strategy =  std::make_unique<StochasticOscillatorCrossover>(20, 2);
+    // auto strategy =  std::make_unique<StochasticOscillatorCrossover>(20, 2);
+    auto strategy =  std::make_unique<BollingerBandMeanReversion>();
     
     Backtester backtester(std::move(strategy), config);
 

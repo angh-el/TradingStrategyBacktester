@@ -15,7 +15,9 @@ Signal BollingerBandMeanReversion::generateSignal(const Candle &candle, const In
     double currentPrice = candle.close;
     double upperBand = bollingerBands->getUpper();
     double lowerBand = bollingerBands->getLower();
-    double middleBand = bollingerBands->getMiddleBand();
+    double middleBand = bollingerBands->getMiddle();
+
+    // std::cout<<upperBand<<" "<<middleBand<<" "<<lowerBand<<"\n";
     
     Signal signal(SignalType::HOLD, candle.close, candle.date);
     
@@ -37,6 +39,7 @@ Signal BollingerBandMeanReversion::generateSignal(const Candle &candle, const In
             // For now, we'll use SELL as exit signal
             signal.type = SignalType::SELL;
         }
+        // std::cout<<"yo ";
     }
     
     // Store current values for next iteration
@@ -45,7 +48,6 @@ Signal BollingerBandMeanReversion::generateSignal(const Candle &candle, const In
     prevLowerBand = lowerBand;
     prevMiddleBand = middleBand;
     hasPreviousValues = true;
-    
     return signal;
 }
 
@@ -85,7 +87,8 @@ bool BollingerBandMeanReversion::isPriceNearMiddleBand(double price, double midd
 
 bool BollingerBandMeanReversion::isBounceOffLowerBand(double currentPrice, double prevPrice, double lowerBand, double prevLowerBand) const {
     // Price was at or below lower band and is now moving up
-    return (prevPrice <= prevLowerBand) && (currentPrice > lowerBand);
+    // return (prevPrice <= prevLowerBand) && (currentPrice > lowerBand);
+    return prevPrice <= prevLowerBand && currentPrice > prevPrice;
 }
 
 bool BollingerBandMeanReversion::isBounceOffUpperBand(double currentPrice, double prevPrice, double upperBand, double prevUpperBand) const {

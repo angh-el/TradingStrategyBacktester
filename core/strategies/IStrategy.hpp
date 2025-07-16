@@ -176,7 +176,7 @@ private:
     bool isBounceOffUpperBand(double currentPrice, double prevPrice, double upperBand, double prevUpperBand) const;
 
 public:
-    BollingerBandMeanReversion(int per = 20, double stdMult = 2.0, double entryThresh = 0.0, double exitThresh = 0.1);
+    BollingerBandMeanReversion(int per = 20, double stdMult = 2.0, double entryThresh = 0.6, double exitThresh = 0.1);
     ~BollingerBandMeanReversion() = default;
     
     Signal generateSignal(const Candle &candle, const IndicatorManager &indicators) override;
