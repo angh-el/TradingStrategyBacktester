@@ -31,13 +31,7 @@ int main(){
     double stochasticD;
     double rsi;
     double adx;
-
-    // std::unique_ptr<SimpleMovingAverage>sma = std::make_unique<SimpleMovingAverage>();
-    // std::unique_ptr<BollingerBands>bb = std::make_unique<BollingerBands>();
-    // std::unique_ptr<Stochastic>stochastic = std::make_unique<Stochastic>();
-    // std::unique_ptr<RelativeStrengthIndex> rsi = std::make_unique<RelativeStrengthIndex>();
-    // std::unique_ptr<AverageDirectionalIndex> adx = std::make_unique<AverageDirectionalIndex>();    
-    
+   
 
     BacktestConfig config(10000.00);
     config.sizingMethod = PositionSizingMethod::PERCENTAGE_CAPITAL;
@@ -57,14 +51,12 @@ int main(){
         Candle candle = mdata.getNextCandle();
         
         if(candle.date.empty()) break;
-    
+        
 
         inidcatorManager.update(candle);
 
         backtester.processCandle(candle, inidcatorManager);
         
-        // sma->update(candle);
-        // std::cout<<sma->getSMA()<<" ";
 
         sma = inidcatorManager.sma->getSMA();
         lowerbb = inidcatorManager.bb->getLower();
@@ -74,23 +66,25 @@ int main(){
         rsi = inidcatorManager.rsi->getValue();
         adx = inidcatorManager.adx->getADX();
         
+        CSVManager::logIndicators(
+            candle.date,
+            sma,
+            lowerbb,
+            upperbb,
+            stochasticK,
+            stochasticD,
+            rsi,
+            adx
+        );
+        
         // std::cout<<"date: "<<candle.date<<"\t";
-        // std::cout<<"SMA: "<<sma->getSMA()<<"\t";
-        // std::cout<<"lowerbb: "<<bb->getLower()<<"\t";
-        // std::cout<<"upperbb: "<<bb->getUpper()<<"\t";
-        // std::cout<<"stochasticK: "<<stochastic->getPercentK()<<"\t";
-        // std::cout<<"stochasticD: "<<stochastic->getPercentD()<<"\t";
-        // std::cout<<"rsi: "<<rsi->getValue()<<"\t";
-        // std::cout<<"adx: "<<adx->getADX()<<std::endl;
-
-        std::cout<<"date: "<<candle.date<<"\t";
-        std::cout<<"SMA: "<<sma<<"\t";
-        std::cout<<"lowerbb: "<<lowerbb<<"\t";
-        std::cout<<"upperbb: "<<upperbb<<"\t";
-        std::cout<<"stochasticK: "<<stochasticK<<"\t";
-        std::cout<<"stochasticD: "<<stochasticD<<"\t";
-        std::cout<<"rsi: "<<rsi<<"\t";
-        std::cout<<"adx: "<<adx<<std::endl;
+        // std::cout<<"SMA: "<<sma<<"\t";
+        // std::cout<<"lowerbb: "<<lowerbb<<"\t";
+        // std::cout<<"upperbb: "<<upperbb<<"\t";
+        // std::cout<<"stochasticK: "<<stochasticK<<"\t";
+        // std::cout<<"stochasticD: "<<stochasticD<<"\t";
+        // std::cout<<"rsi: "<<rsi<<"\t";
+        // std::cout<<"adx: "<<adx<<std::endl;
         
 
 
@@ -100,6 +94,13 @@ int main(){
     std::cout<<"Total Return: "<<backtester.getTotalReturnPercent()<<"%"<<std::endl;
     std::cout<<"Number of Trades: "<< backtester.getNumberOfTrades()<<std::endl;
     std::cout<<"Final Capital: "<<backtester.getFinalCapital()<<"\n";
-    
+    std::cout<<"Sharpe Ratio: "<<backtester.getSharpeRatio() <<"\n";
+    std::cout<<"Max Drawdown: "<<backtester.getMaxDrawdown() <<"\n";
+    std::cout<<"Win Rate: "<<backtester.getWinRate() <<"\n";
+    std::cout<<"Profit Factor: "<<backtester.getProfitFactor() <<"\n";
+    std::cout<<"Avg Trade Duration: "<<backtester.getAvgTradeDuration() <<"\n";
+    std::cout<<"Avg Trade Return: "<<backtester.getAvgTradeReturn() <<"\n";
+    // std::cout<< <<"\n";
+
     return 0;
 }

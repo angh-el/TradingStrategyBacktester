@@ -485,3 +485,198 @@ double Backtester::getTotalReturnPercent() const{
     double finalEquity = equityHistory.back();
     return ((finalEquity - config.initialCapital)/ config.initialCapital) * 100.0;
 }
+
+
+
+
+
+
+double Backtester::getSharpeRatio() const {
+    if (equityHistory.size() < 2) return 0.0;
+    
+    // Calculate daily returns
+    std::vector<double> returns;
+    for (size_t i = 1; i < equityHistory.size(); ++i) {
+        double dailyReturn = (equityHistory[i] - equityHistory[i-1]) / equityHistory[i-1];
+        returns.push_back(dailyReturn);
+    }
+    
+    if (returns.empty()) return 0.0;
+    
+    // Calculate mean return
+    double meanReturn = 0.0;
+    for (double ret : returns) {
+        meanReturn += ret;
+    }
+    meanReturn /= returns.size();
+    
+    // Calculate standard deviation
+    double variance = 0.0;
+    for (double ret : returns) {
+        variance += (ret - meanReturn) * (ret - meanReturn);
+    }
+    variance /= returns.size();
+    double stdDev = std::sqrt(variance);
+    
+    // Sharpe ratio (assuming risk-free rate = 0)
+    return (stdDev == 0.0) ? 0.0 : (meanReturn / stdDev) * std::sqrt(252.0 * 390.0); // 252 days * 390 minute of trading per day
+}
+
+double Backtester::getMaxDrawdown() const {
+    if (equityHistory.empty()) return 0.0;
+    
+    double maxDrawdown = 0.0;
+    double peak = equityHistory[0];
+    
+    for (double equity : equityHistory) {
+        if (equity > peak) {
+            peak = equity;
+        }
+        
+        double drawdown = (peak - equity) / peak * 100.0; // Percentage drawdown
+        if (drawdown > maxDrawdown) {
+            maxDrawdown = drawdown;
+        }
+    }
+    
+    return maxDrawdown;
+}
+
+double Backtester::getWinRate() const {
+    if (trades.empty()) return 0.0;
+    
+    int winningTrades = 0;
+    for ( Trade trade : trades) {
+        trade.calculateMetrics();
+
+        if (trade.getPnL() > 0) {
+            winningTrades++;
+        }
+    }
+    
+    return (static_cast<double>(winningTrades) / trades.size()) * 100.0;
+}
+
+double Backtester::getProfitFactor() const {
+    if (trades.empty()) return 0.0;
+    
+    double totalProfit = 0.0;
+    double totalLoss = 0.0;
+    
+    for (Trade trade : trades) {
+        trade.calculateMetrics();
+        double pnl = trade.getPnL();
+        if (pnl > 0) {
+            totalProfit += pnl;
+        } else {
+            totalLoss += std::abs(pnl);
+        }
+    }
+    
+    return (totalLoss == 0.0) ? (totalProfit > 0 ? std::numeric_limits<double>::infinity() : 0.0) 
+                              : (totalProfit / totalLoss);
+}
+
+double Backtester::getAvgTradeDuration() const {
+    if (trades.empty()) return 0.0;
+    
+    int totalDuration = 0;
+    for (const Trade& trade : trades) {
+        // totalDuration += trade.getDuration();
+        totalDuration += trade.getDurationBars();
+        
+    }
+    
+    return static_cast<double>(totalDuration) / trades.size();
+}
+
+double Backtester::getAvgTradeReturn() const {
+    if (trades.empty()) return 0.0;
+    
+    double totalReturn = 0.0;
+    for (Trade trade : trades) {
+        trade.calculateMetrics();
+        totalReturn += trade.getPnL();
+    }
+    
+    return totalReturn / trades.size();
+}
+
+double Backtester::getAvgTradeReturnPercent() const {
+    if (trades.empty()) return 0.0;
+    
+    double totalReturnPercent = 0.0;
+    for ( Trade trade : trades) {
+        trade.calculateMetrics();
+        double returnPercent = (trade.getPnL() / (trade.getEntryPrice() * trade.getQuantity())) * 100.0;
+        totalReturnPercent += returnPercent;
+    }
+    
+    return totalReturnPercent / trades.size();
+}
+
+double Backtester::getMaxConsecutiveLosses() const {
+    if (trades.empty()) return 0.0;
+    
+    int maxLosses = 0;
+    int currentLosses = 0;
+    
+    for (Trade trade : trades) {
+        trade.calculateMetrics();
+        if (trade.getPnL() < 0) {
+            currentLosses++;
+            maxLosses = std::max(maxLosses, currentLosses);
+        } else {
+            currentLosses = 0;
+        }
+    }
+    
+    return maxLosses;
+}
+
+double Backtester::getMaxConsecutiveWins() const {
+    if (trades.empty()) return 0.0;
+    
+    int maxWins = 0;
+    int currentWins = 0;
+    
+    for (Trade trade : trades) {
+        trade.calculateMetrics();
+        if (trade.getPnL() > 0) {
+            currentWins++;
+            maxWins = std::max(maxWins, currentWins);
+        } else {
+            currentWins = 0;
+        }
+    }
+    
+    return maxWins;
+}
+
+double Backtester::getLargestWin() const {
+    if (trades.empty()) return 0.0;
+    
+    double largestWin = 0.0;
+    for (Trade trade : trades) {
+        trade.calculateMetrics();
+        if (trade.getPnL() > largestWin) {
+            largestWin = trade.getPnL();
+        }
+    }
+    
+    return largestWin;
+}
+
+double Backtester::getLargestLoss() const {
+    if (trades.empty()) return 0.0;
+    
+    double largestLoss = 0.0;
+    for (Trade trade : trades) {
+        trade.calculateMetrics();
+        if (trade.getPnL() < largestLoss) {
+            largestLoss = trade.getPnL();
+        }
+    }
+    
+    return largestLoss;
+}

@@ -1,5 +1,7 @@
 #include "CSVManager.hpp"
 
+bool headerWritten = false;
+std::string indicatorsPath = "../data/indicators.csv";
 
 namespace CSVManager{
     void parseCSV(MarketData *mdata, const char *fp){
@@ -40,4 +42,50 @@ namespace CSVManager{
 
         return;
     }
+
+    
+
+
+    
+    void writeHeaderIfNeeded() {
+        if (headerWritten) return;
+
+        std::ofstream out(indicatorsPath, std::ios::trunc);
+
+        // Check if file already exists and is non-empty
+        std::ifstream infile(indicatorsPath);
+        bool fileExistsAndNotEmpty = infile.peek() != std::ifstream::traits_type::eof();
+        infile.close();
+
+        if (!fileExistsAndNotEmpty) {
+            std::ofstream out(indicatorsPath, std::ios::app);
+            // out << "Date,SMA,LowerBB,UpperBB,StochasticK,StochasticD,RSI,ADX\n";
+            out.close();
+        }
+
+        headerWritten = true;
+    }
+
+    // function to log indicators to indicators.csv
+    void logIndicators( const std::string& date, double sma, double lowerBB, double upperBB, double stochasticK, double stochasticD, double rsi,double adx) {
+        writeHeaderIfNeeded();
+
+        std::ofstream out(indicatorsPath, std::ios::app);
+        if (!out.is_open()) {
+            throw std::runtime_error("Failed to open file: " + indicatorsPath);
+        }
+
+        out << date << ","
+            << sma << ","
+            << lowerBB << ","
+            << upperBB << ","
+            << stochasticK << ","
+            << stochasticD << ","
+            << rsi << ","
+            << adx << "\n";
+
+        out.close();
+    }
+
+
 }

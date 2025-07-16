@@ -12,7 +12,16 @@
 
 namespace CSVManager{
     void parseCSV(MarketData *mdata, const char *fp);
+
+
+    // bool headerWritten = false;
+    // std::string indicatorsPath = "../../data/indicators.csv";
+
+    
+    void writeHeaderIfNeeded();
+    void logIndicators( const std::string& date, double sma, double lowerBB, double upperBB, double stochasticK, double stochasticD, double rsi,double adx);
 }
+
 
 
 

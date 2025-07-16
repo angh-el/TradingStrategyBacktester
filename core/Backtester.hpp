@@ -69,10 +69,22 @@ public:
     const std::vector<double> &getEquityHistory() const {return equityHistory;}
     const Position &getCurrentPosition() const {return currentPosition;}
 
+    // metrics getters
     double getFinalCapital() const {return currentCapital;}
     double getTotalReturn() const;
     double getTotalReturnPercent() const;
     int getNumberOfTrades() const {return trades.size();}
+    double getSharpeRatio() const;
+    double getMaxDrawdown() const;
+    double getWinRate() const;
+    double getProfitFactor() const;
+    double getAvgTradeDuration() const;
+    double getAvgTradeReturn() const;
+    double getAvgTradeReturnPercent() const;
+    double getMaxConsecutiveLosses() const;
+    double getMaxConsecutiveWins() const;
+    double getLargestWin() const;
+    double getLargestLoss() const;
 
     std::string getStrategyName() const {return strategy->getName();}
 
