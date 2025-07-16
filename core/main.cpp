@@ -90,17 +90,23 @@ int main(){
 
     }
 
+    CSVManager::logTrades(backtester.getTrades());
+    CSVManager::logMetrics(backtester);
+
     // backtester.finalise();
-    std::cout<<"Total Return: "<<backtester.getTotalReturnPercent()<<"%"<<std::endl;
-    std::cout<<"Number of Trades: "<< backtester.getNumberOfTrades()<<std::endl;
-    std::cout<<"Final Capital: "<<backtester.getFinalCapital()<<"\n";
-    std::cout<<"Sharpe Ratio: "<<backtester.getSharpeRatio() <<"\n";
-    std::cout<<"Max Drawdown: "<<backtester.getMaxDrawdown() <<"\n";
-    std::cout<<"Win Rate: "<<backtester.getWinRate() <<"\n";
-    std::cout<<"Profit Factor: "<<backtester.getProfitFactor() <<"\n";
-    std::cout<<"Avg Trade Duration: "<<backtester.getAvgTradeDuration() <<"\n";
-    std::cout<<"Avg Trade Return: "<<backtester.getAvgTradeReturn() <<"\n";
+
+    // std::cout<<"Total Return: "<<backtester.getTotalReturnPercent()<<"%"<<std::endl;
+    // std::cout<<"Number of Trades: "<< backtester.getNumberOfTrades()<<std::endl;
+    // std::cout<<"Final Capital: "<<backtester.getFinalCapital()<<"\n";
+    // std::cout<<"Sharpe Ratio: "<<backtester.getSharpeRatio() <<"\n";
+    // std::cout<<"Max Drawdown: "<<backtester.getMaxDrawdown() <<"\n";
+    // std::cout<<"Win Rate: "<<backtester.getWinRate() <<"\n";
+    // std::cout<<"Profit Factor: "<<backtester.getProfitFactor() <<"\n";
+    // std::cout<<"Avg Trade Duration: "<<backtester.getAvgTradeDuration() <<"\n";
+    // std::cout<<"Avg Trade Return: "<<backtester.getAvgTradeReturn() <<"\n";
     // std::cout<< <<"\n";
+
+    // backtester.getTrades();
 
     return 0;
 }

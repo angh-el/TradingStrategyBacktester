@@ -88,4 +88,56 @@ namespace CSVManager{
     }
 
 
+    void logTrades(const std::vector<Trade> trades) {
+        std::ofstream out("../data/trades.csv", std::ios::trunc);  // truncate to start fresh
+
+        if (!out.is_open()) {
+            throw std::runtime_error("Failed to open trades.csv for writing.");
+        }
+
+        // Write header
+        // out << "EntryTime,ExitTime,Side,EntryPrice,ExitPrice,PNL,Duration\n";
+
+
+        for ( auto trade : trades) {
+            trade.calculateMetrics();
+            out << trade.getEntryTime() << ","
+                << trade.getExitTime() << ","
+                // << trade.getSide() << ","
+                << trade.getEntryPrice() << ","
+                << trade.getExitPrice() << ","
+                << trade.getPnL() << ","
+                << trade.getDurationBars() << "\n";
+        }
+
+        out.close();
+    }
+
+
+    void logMetrics(const Backtester& backtester) {
+        std::ofstream out("../data/metrics.csv", std::ios::trunc);  
+
+        if (!out.is_open()) {
+            throw std::runtime_error("Failed to open matrics.csv for writing.");
+        }
+
+        out <<"Starting capital: 10000"<<"\n"
+            <<"Total return: "<<backtester.getTotalReturnPercent()<<"%"<<"\n"
+            <<"Sharpe ratio: "<<backtester.getSharpeRatio()<<"\n"
+            <<"Max drawdown: "<<backtester.getMaxDrawdown() <<"\n"
+            <<"Win rate: "<<backtester.getWinRate() <<"\n"
+            <<"Profit factor: "<<backtester.getProfitFactor() <<"\n"
+            <<"Avg trade return: "<<backtester.getAvgTradeReturn() <<"\n"
+            <<"Number of trades: "<<backtester.getNumberOfTrades() <<"\n"
+            <<"Avg trade duration: "<<backtester.getAvgTradeDuration()<<"\n"
+            <<"Greatest win: "<<backtester.getLargestWin() <<"\n"
+            <<"Greatest loss: "<<backtester.getLargestLoss() <<"\n"
+            <<"Max consecutive wins: "<<backtester.getMaxConsecutiveWins() <<"\n"
+            <<"Max consecutive losses: "<<backtester.getMaxConsecutiveLosses() <<"\n";
+
+
+
+        out.close();
+    }
+
 }
