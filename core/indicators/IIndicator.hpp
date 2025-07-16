@@ -103,13 +103,16 @@ public:
 // manager
 class IndicatorManager{
 private:
-    std::vector<std::unique_ptr<IIndicator>> indicators;
+    // std::vector<std::unique_ptr<IIndicator>> indicators;
+    std::vector<IIndicator> indicators;
 public:
-    SimpleMovingAverage sma;
-    BollingerBands bb;
-    RelativeStrengthIndex rsi;
-    Stochastic stochastic;
-    AverageDirectionalIndex adx;
+    std::unique_ptr<SimpleMovingAverage>sma;
+
+    // SimpleMovingAverage sma;
+    std::unique_ptr<BollingerBands> bb;
+    std::unique_ptr<RelativeStrengthIndex> rsi;
+    std::unique_ptr<Stochastic> stochastic;
+    std::unique_ptr<AverageDirectionalIndex> adx;
 
     IndicatorManager();
 

@@ -7,11 +7,11 @@ IndicatorManager::IndicatorManager()
     // : sma(), bb(), rsi(), stochastic(), adx()
     {
     
-    indicators.emplace_back(&sma);
-    indicators.emplace_back(&bb); 
-    indicators.emplace_back(&rsi); 
-    indicators.emplace_back(&stochastic);
-    indicators.emplace_back(&adx);
+    // indicators.emplace_back(&sma);
+    // indicators.emplace_back(&bb); 
+    // indicators.emplace_back(&rsi); 
+    // indicators.emplace_back(&stochastic);
+    // indicators.emplace_back(&adx);
     
 
     // indicators.emplace_back(std::make_unique<SimpleMovingAverage>(10));
@@ -20,12 +20,32 @@ IndicatorManager::IndicatorManager()
     // indicators.emplace_back(std::make_unique<Stochastic>(14, 3));
     // indicators.emplace_back(std::make_unique<AverageDirectionalIndex>(14));
 
+    
+    sma = std::make_unique<SimpleMovingAverage>();
+    bb = std::make_unique<BollingerBands>();
+    rsi = std::make_unique<RelativeStrengthIndex>();
+    stochastic = std::make_unique<Stochastic>();
+    adx = std::make_unique<AverageDirectionalIndex>();
+        
+    // indicators.emplace_back(sma);
+    // indicators.emplace_back(bb);
+    // indicators.emplace_back(rsi);
+    // indicators.emplace_back(stochastic);
+    // indicators.emplace_back(adx);
+
+
 }
 
 void IndicatorManager::update(const Candle &candle){
-    for(auto &indicator:indicators){
-        indicator->update(candle);
-    }
+    // for(auto &indicator:indicators){
+        // indicator->update(candle);
+    // }
+
+    sma->update(candle);
+    bb->update(candle);
+    rsi->update(candle);
+    stochastic->update(candle);
+    adx->update(candle);
 }
 
 
