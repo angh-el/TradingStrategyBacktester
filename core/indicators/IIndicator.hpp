@@ -35,6 +35,7 @@ private:
     std::deque<double> window;
     double upperBand = 0;
     double lowerBand = 0;
+    double middleBand = 0;
     const int period;
     const int multiplier;
 public:
@@ -42,6 +43,7 @@ public:
     void update(const Candle& candle) override;
     double getUpper() const { return upperBand; }
     double getLower() const { return lowerBand; }
+    double getMiddle() const { return middleBand;}
 };
 
 

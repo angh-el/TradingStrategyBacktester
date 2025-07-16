@@ -65,6 +65,8 @@ void BollingerBands::update(const Candle &candle){
             sum += val;
         }
         double mean = sum / period;
+        
+        middleBand = mean;
 
         double variance = 0;
         for (double val : window){

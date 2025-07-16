@@ -130,3 +130,65 @@ public:
 };
 
 #endif
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+#ifndef BOLLINGERBANDMEANREVERSION_HPP
+#define BOLLINGERBANDMEANREVERSION_HPP
+
+#include "IStrategy.hpp"
+#include "../indicators/IIndicator.hpp"
+#include <memory>
+
+class BollingerBandMeanReversion : public IStrategy {
+private:
+    int period;             
+    double stdDevMultiplier; 
+    double entryThreshold;   
+    double exitThreshold;    
+    
+    std::unique_ptr<BollingerBands> bollingerBands;
+    
+    double prevPrice;
+    double prevUpperBand;
+    double prevLowerBand;
+    double prevMiddleBand;
+    bool hasPreviousValues;
+    
+    bool isPriceNearUpperBand(double price, double upperBand, double middleBand) const;
+    bool isPriceNearLowerBand(double price, double lowerBand, double middleBand) const;
+    bool isPriceNearMiddleBand(double price, double middleBand, double upperBand, double lowerBand) const;
+    bool isBounceOffLowerBand(double currentPrice, double prevPrice, double lowerBand, double prevLowerBand) const;
+    bool isBounceOffUpperBand(double currentPrice, double prevPrice, double upperBand, double prevUpperBand) const;
+
+public:
+    BollingerBandMeanReversion(int per = 20, double stdMult = 2.0, double entryThresh = 0.0, double exitThresh = 0.1);
+    ~BollingerBandMeanReversion() = default;
+    
+    Signal generateSignal(const Candle &candle, const IndicatorManager &indicators) override;
+    std::string getName() const override;
+    void reset() override;
+    
+    // Getters
+    int getPeriod() const { return period; }
+    double getStdDevMultiplier() const { return stdDevMultiplier; }
+    double getEntryThreshold() const { return entryThreshold; }
+    double getExitThreshold() const { return exitThreshold; }
+};
+
+
+#endif
