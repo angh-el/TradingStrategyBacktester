@@ -29,7 +29,7 @@ int main(){
     // double upperbb;
     // double stochasticK;
     // double stochasticD;
-    // double rsi;
+    double rsi;
     // double adx;
 
     BacktestConfig config(10000.00);
@@ -41,8 +41,9 @@ int main(){
 
     // auto strategy =  std::make_unique<SimpleMovingAverageCrossover>(75,175);
     // auto strategy =  std::make_unique<StochasticOscillatorCrossover>(20, 2);
-    auto strategy =  std::make_unique<BollingerBandMeanReversion>();
-    
+    // auto strategy =  std::make_unique<BollingerBandMeanReversion>();
+    auto strategy =  std::make_unique<RSIMeanReversion>();
+
     Backtester backtester(std::move(strategy), config);
 
     while(true){
@@ -60,7 +61,7 @@ int main(){
         // upperbb = inidcatorManager.bb.getUpper();
         // stochasticK = inidcatorManager.stochastic.getPercentK();
         // stochasticD = inidcatorManager.stochastic.getPercentD();
-        // rsi = inidcatorManager.rsi.getValue();
+        rsi = inidcatorManager.rsi.getValue();
         // adx = inidcatorManager.adx.getADX();
         
         // std::cout<<"date: "<<candle.date<<"\t";

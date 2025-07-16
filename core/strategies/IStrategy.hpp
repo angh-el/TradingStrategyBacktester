@@ -176,7 +176,7 @@ private:
     bool isBounceOffUpperBand(double currentPrice, double prevPrice, double upperBand, double prevUpperBand) const;
 
 public:
-    BollingerBandMeanReversion(int per = 20, double stdMult = 2.0, double entryThresh = 0.6, double exitThresh = 0.1);
+    BollingerBandMeanReversion(int per = 20, double stdMult = 2.0, double entryThresh = 0.3, double exitThresh = 0.1);
     ~BollingerBandMeanReversion() = default;
     
     Signal generateSignal(const Candle &candle, const IndicatorManager &indicators) override;
@@ -190,5 +190,69 @@ public:
     double getExitThreshold() const { return exitThreshold; }
 };
 
+
+#endif
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+#ifndef RSIMEANREVERSION_HPP
+#define RSIMEANREVERSION_HPP
+
+#include "IStrategy.hpp"
+#include "../indicators/IIndicator.hpp"
+#include <memory>
+
+class RSIMeanReversion : public IStrategy {
+private:
+    int period;              
+    double overboughtLevel;  
+    double oversoldLevel;    
+    double neutralZone;      
+    double exitBandwidth;    
+    
+    std::unique_ptr<RelativeStrengthIndex> rsi;
+    
+    double prevRSI;
+    bool hasPreviousValues;
+    
+    bool isOversold(double rsiValue) const;
+    bool isOverbought(double rsiValue) const;
+    bool isInNeutralZone(double rsiValue) const;
+    bool isRSIRising(double currentRSI, double prevRSI) const;
+    bool isRSIFalling(double currentRSI, double prevRSI) const;
+    bool isBullishReversal(double currentRSI, double prevRSI) const;
+    bool isBearishReversal(double currentRSI, double prevRSI) const;
+
+public:
+    RSIMeanReversion(int per = 3, double overbought = 70.0, double oversold = 30.0, 
+                     double neutral = 50.0, double exitBand = 5.0);
+    // RSIMeanReversion(int per = 14, double overbought = 50.0, double oversold = 10.0, 
+    //                  double neutral = 50.0, double exitBand = 2.0);
+    
+    ~RSIMeanReversion() = default;
+    
+    Signal generateSignal(const Candle &candle, const IndicatorManager &indicators) override;
+    std::string getName() const override;
+    void reset() override;
+    
+    int getPeriod() const { return period; }
+    double getOverboughtLevel() const { return overboughtLevel; }
+    double getOversoldLevel() const { return oversoldLevel; }
+    double getNeutralZone() const { return neutralZone; }
+    double getExitBandwidth() const { return exitBandwidth; }
+};
 
 #endif

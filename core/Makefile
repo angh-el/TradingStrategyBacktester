@@ -53,7 +53,8 @@ SRCS = main.cpp \
        broker/Trade.cpp \
        Backtester.cpp \
        strategies/StochasticOscillatorCrossover.cpp \
-       strategies/BollingerBandMeanReversion.cpp
+       strategies/BollingerBandMeanReversion.cpp \
+       strategies/RSIMeanReversion.cpp
 
 # Object files (replace .cpp with .o)
 OBJS = $(SRCS:.cpp=.o)
