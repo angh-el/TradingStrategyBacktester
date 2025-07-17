@@ -3,6 +3,8 @@ import pandas as pd
 import time
 from datetime import datetime
 
+import subprocess
+
 import os
 from dotenv import load_dotenv
 
@@ -87,6 +89,9 @@ if __name__ == "__main__":
     API_KEY = os.getenv("ALPACA_API")
     SECRET_KEY = os.getenv("ALPACA_SECRET")
 
-    ingestion = Ingestion(API_KEY, SECRET_KEY)
-    bars = ingestion.fetch_data("AAPL", "2024-01-01")
-    ingestion.save_to_csv(bars, "../data/aapl_1min.csv")
+    # ingestion = Ingestion(API_KEY, SECRET_KEY)
+    # bars = ingestion.fetch_data("AAPL", "2024-01-01")
+    # ingestion.save_to_csv(bars, "../data/aapl_1min.csv")
+
+    subprocess.run(["../core/main", "stochastic"])
+

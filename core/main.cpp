@@ -15,7 +15,7 @@
 #include "Backtester.hpp"
 
 
-int main(){
+int main(int argc, char* argv[]){
     const char * fp = "../data/aapl_1min.csv";
     MarketData mdata;
 
@@ -40,8 +40,32 @@ int main(){
     config.allowShortSelling = true;
     config.transactionCost = 0.0;
 
+    if(argc < 2){
+        std::cerr<<"Error";
+    }
+
+    std::string strategyName = argv[1];
+    std::unique_ptr<IStrategy> strategy;
+
+    if (strategyName == "sma") {
+        strategy = std::make_unique<SimpleMovingAverageCrossover>(75, 175);
+    } 
+    else if (strategyName == "stochastic") {
+        strategy = std::make_unique<StochasticOscillatorCrossover>(20, 2);
+    } 
+    else if (strategyName == "bollinger") {
+        strategy = std::make_unique<BollingerBandMeanReversion>();
+    } 
+    else if (strategyName == "rsi") {
+        strategy = std::make_unique<RSIMeanReversion>();
+    } 
+    else {
+        std::cerr << "Unknown strategy: " << strategyName << "\n";
+        return 1;
+    }
+
     // auto strategy =  std::make_unique<SimpleMovingAverageCrossover>(75,175);
-    auto strategy =  std::make_unique<StochasticOscillatorCrossover>(20, 2);
+    // auto strategy =  std::make_unique<StochasticOscillatorCrossover>(20, 2);
     // auto strategy =  std::make_unique<BollingerBandMeanReversion>();
     // auto strategy =  std::make_unique<RSIMeanReversion>();
 
@@ -93,6 +117,8 @@ int main(){
     CSVManager::logTrades(backtester.getTrades());
     CSVManager::logMetrics(backtester);
 
+    
+    
     // backtester.finalise();
 
     // std::cout<<"Total Return: "<<backtester.getTotalReturnPercent()<<"%"<<std::endl;
@@ -107,6 +133,8 @@ int main(){
     // std::cout<< <<"\n";
 
     // backtester.getTrades();
+
+    std::cout<<"Backtester run successfully"<<std::endl;
 
     return 0;
 }
