@@ -93,5 +93,5 @@ if __name__ == "__main__":
     # bars = ingestion.fetch_data("AAPL", "2024-01-01")
     # ingestion.save_to_csv(bars, "../data/aapl_1min.csv")
 
-    subprocess.run(["../core/main", "stochastic"])
+    
 
