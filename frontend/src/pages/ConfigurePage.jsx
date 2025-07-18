@@ -26,12 +26,19 @@ export default function ConfigurePage() {
       strategy,
     };
 
+    // try {
+    //   await axios.post("http://localhost:5000/api/run-backtest", payload);
+    //   navigate("/results");
+    // } catch (err) {
+    //   alert("Error running backtest");
+    // }
+
     try {
-      await axios.post("http://localhost:5000/api/run-backtest", payload);
-      navigate("/results");
+        navigate("/results", { state: payload }); 
     } catch (err) {
-      alert("Error running backtest");
+        alert("Error running backtest");
     }
+
   };
 
   return (

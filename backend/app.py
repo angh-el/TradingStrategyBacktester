@@ -10,15 +10,20 @@ app = Flask(__name__)
 CORS(app)  # Allow requests from React frontend
 
 def build_response():
+    indicators = ["date", "sma", "lowerbb", "upperbb", "stochasticK", "stochasticD", "rsi", "adx"]
+    trades = ["Entry time", "Exit time", "Entry price","Exit price","PnL","Duration"]
+
     try:
-        equity_df = pd.read_csv("../data/indicators.csv")
-        trades_df = pd.read_csv("../data/metrics.csv")
-        metrics_df = pd.read_csv("../data/trades.csv")
+        indicators_df = pd.read_csv("../data/indicators.csv", header=None, names=indicators)
+        metrics_df = pd.read_csv("../data/metrics.csv")
+        trades_df = pd.read_csv("../data/trades.csv", header=None, names=trades)
+
+        # print(indicators_df)
 
         return {
-            "equity": equity_df.to_dict(orient="records"),
-            "trades": trades_df.to_dict(orient="records"),
-            "metrics": metrics_df.to_dict(orient="records")
+            "indicators": indicators_df.to_dict(orient="records"),
+            "metrics": metrics_df.to_dict(orient="records"),
+            "trades": trades_df.to_dict(orient="records")
         }
     except Exception as e:
         raise RuntimeError(f"Failed to read CSV files: {e}")
@@ -26,6 +31,7 @@ def build_response():
 @app.route("/api/run-backtest", methods=["POST"])
 def handle_backtest():
     data = request.get_json()
+    print("REQUEST")
 
     # print("data: ",data["strategy"])
     try:

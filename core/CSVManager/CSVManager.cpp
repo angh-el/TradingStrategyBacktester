@@ -121,21 +121,19 @@ namespace CSVManager{
             throw std::runtime_error("Failed to open matrics.csv for writing.");
         }
 
-        out <<"Starting capital: 10000"<<"\n"
-            <<"Total return: "<<backtester.getTotalReturnPercent()<<"%"<<"\n"
-            <<"Sharpe ratio: "<<backtester.getSharpeRatio()<<"\n"
-            <<"Max drawdown: "<<backtester.getMaxDrawdown() <<"\n"
-            <<"Win rate: "<<backtester.getWinRate() <<"\n"
-            <<"Profit factor: "<<backtester.getProfitFactor() <<"\n"
-            <<"Avg trade return: "<<backtester.getAvgTradeReturn() <<"\n"
-            <<"Number of trades: "<<backtester.getNumberOfTrades() <<"\n"
-            <<"Avg trade duration: "<<backtester.getAvgTradeDuration()<<"\n"
-            <<"Greatest win: "<<backtester.getLargestWin() <<"\n"
-            <<"Greatest loss: "<<backtester.getLargestLoss() <<"\n"
-            <<"Max consecutive wins: "<<backtester.getMaxConsecutiveWins() <<"\n"
-            <<"Max consecutive losses: "<<backtester.getMaxConsecutiveLosses() <<"\n";
-
-
+        out <<"10000"<<","
+            <<backtester.getTotalReturnPercent()<<","
+            <<backtester.getSharpeRatio()<<","
+            <<backtester.getMaxDrawdown() <<","
+            <<backtester.getWinRate() <<","
+            <<backtester.getProfitFactor() <<","
+            <<backtester.getAvgTradeReturn() <<","
+            <<backtester.getNumberOfTrades() <<","
+            <<backtester.getAvgTradeDuration()<<","
+            <<backtester.getLargestWin() <<","
+            <<backtester.getLargestLoss() <<","
+            <<backtester.getMaxConsecutiveWins() <<","
+            <<backtester.getMaxConsecutiveLosses() <<"\n";
 
         out.close();
     }
