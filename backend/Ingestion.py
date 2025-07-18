@@ -83,11 +83,11 @@ class Ingestion:
 
 
 
-if __name__ == "__main__":
-    load_dotenv()
+# if __name__ == "__main__":
+    # load_dotenv()
 
-    API_KEY = os.getenv("ALPACA_API")
-    SECRET_KEY = os.getenv("ALPACA_SECRET")
+    # API_KEY = os.getenv("ALPACA_API")
+    # SECRET_KEY = os.getenv("ALPACA_SECRET")
 
     # ingestion = Ingestion(API_KEY, SECRET_KEY)
     # bars = ingestion.fetch_data("AAPL", "2024-01-01")

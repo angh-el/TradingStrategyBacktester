@@ -32,7 +32,7 @@ Signal RSIMeanReversion::generateSignal(const Candle &candle, const IndicatorMan
         // Sell signal: RSI was overbought and is now falling (bearish reversal)
         else if (isBearishReversal(currentRSI, prevRSI)) {
             signal.type = SignalType::SELL;
-            std::cout<<"SELL\n";
+            // std::cout<<"SELL\n";
         }
         // Exit signal: RSI returns to neutral zone (mean reversion complete)
         else if (isInNeutralZone(currentRSI)) {

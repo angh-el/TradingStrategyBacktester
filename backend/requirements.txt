@@ -1,0 +1,6 @@
+subprocess
+flask
+flask-cors
+dotenv
+requests
+pandas
