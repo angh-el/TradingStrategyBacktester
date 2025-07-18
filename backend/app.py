@@ -12,15 +12,19 @@ CORS(app)  # Allow requests from React frontend
 def build_response():
     indicators = ["date", "sma", "lowerbb", "upperbb", "stochasticK", "stochasticD", "rsi", "adx"]
     trades = ["Entry time", "Exit time", "Entry price","Exit price","PnL","Duration"]
+    metrics = ["Start capital", "Total return", "Sharpe ratio", "Max drawdown", "Win rate", "Profit factor", "Avg trade return", "Number of trades", "Avg trade duration", "Greatest win", "Greatest loss", "Max continous wins", "Max continous losses"]
+    ohlcv = ["Open", "Highest", "Lowest", "Close", "Volume"]
 
     try:
         indicators_df = pd.read_csv("../data/indicators.csv", header=None, names=indicators)
-        metrics_df = pd.read_csv("../data/metrics.csv")
+        metrics_df = pd.read_csv("../data/metrics.csv", header=None, names=metrics)
         trades_df = pd.read_csv("../data/trades.csv", header=None, names=trades)
+        ohlvc_df = pd.read_csv("../data/aapl_1min.csv")
 
-        # print(indicators_df)
+        # print(ohlvc_df)
 
         return {
+            "ohlcv":ohlvc_df.to_dict(orient="records"),
             "indicators": indicators_df.to_dict(orient="records"),
             "metrics": metrics_df.to_dict(orient="records"),
             "trades": trades_df.to_dict(orient="records")
