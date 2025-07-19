@@ -196,6 +196,7 @@ export default function ResultsPage() {
 
   const { ohlcv, indicators } = data;
 
+  const x = indicators.map((_,i) =>i);
   const dates = indicators.map((d) => d.date);
   const open = ohlcv.map((d) => d.open);
   const high = ohlcv.map((d) => d.highest);
@@ -219,7 +220,8 @@ export default function ResultsPage() {
       <Plot
         data={[
           {
-            x: dates,
+            // x: dates,
+            x,
             open: open,
             high: high,
             low: low,
@@ -230,32 +232,35 @@ export default function ResultsPage() {
             yaxis: "y",
           },
           {
-            x: dates,
+            // x: dates,
+            x,
             y: sma,
             type: "scatter",
             mode: "lines",
             name: "SMA",
-            line: { color: "darkgreen", width: 2 },
+            line: { color: "darkgreen", width: 1 },
             xaxis: "x",
             yaxis: "y",
           },
           {
-            x: dates,
+            // x: dates,
+            x,
             y: upperbb,
             type: "scatter",
             mode: "lines",
             name: "Upper BB",
-            line: { color: "red", width: 1, dash: "dash" },
+            line: { color: "red", width: 0.5, dash: "dash" },
             xaxis: "x",
             yaxis: "y",
           },
           {
-            x: dates,
+            // x: dates,
+            x,
             y: lowerbb,
             type: "scatter",
             mode: "lines",
             name: "Lower BB",
-            line: { color: "red", width: 1, dash: "dash" },
+            line: { color: "red", width: 0.5, dash: "dash" },
             xaxis: "x",
             yaxis: "y",
           },
@@ -263,25 +268,30 @@ export default function ResultsPage() {
         layout={{
           title: "Price with SMA and Bollinger Bands",
           height: 500,
+          width: 1200,
           xaxis: { rangeslider: { visible: false } },
-          yaxis: { title: "Price" },
+          yaxis: {  title: "Price", 
+                    range:[178, 195],
+          },
         }}
-        style={{ width: "100%" }}
+        // style={{ width: "100%" }}
       />
 
       {/* Indicators Chart */}
       <Plot
         data={[
           {
-            x: dates,
+            // x: dates,
+            x,
             y: rsi,
             type: "scatter",
             mode: "lines",
             name: "RSI",
-            line: { color: "blue", width: 2 },
+            line: { color: "blue", width: 1 },
           },
           {
-            x: dates,
+            // x: dates,
+            x,
             y: stochasticK,
             type: "scatter",
             mode: "lines",
@@ -289,7 +299,8 @@ export default function ResultsPage() {
             line: { color: "purple", dash: "dash" },
           },
           {
-            x: dates,
+            // x: dates,
+            x,
             y: stochasticD,
             type: "scatter",
             mode: "lines",
@@ -297,7 +308,8 @@ export default function ResultsPage() {
             line: { color: "purple" },
           },
           {
-            x: dates,
+            // x: dates,
+            x,
             y: adx,
             type: "scatter",
             mode: "lines",
@@ -308,6 +320,7 @@ export default function ResultsPage() {
         layout={{
           title: "Technical Indicators",
           height: 250,
+          width: 1200,
           xaxis: { title: "Date" },
           yaxis: { title: "Value" },
         }}
