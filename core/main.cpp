@@ -58,6 +58,17 @@ int main(int argc, char* argv[]){
     } 
     else if (strategyName == "rsi") {
         strategy = std::make_unique<RSIMeanReversion>();
+    }
+    else if (strategyName == "my-strat") {
+        strategy = std::make_unique<MyStrategy>(
+    10,    // Shorter SMA
+    20, 1.5, // Narrower BB
+    7,     // Shorter RSI
+    14, 3,
+    14, 10.0, // Very low ADX threshold
+    45.0,  // Lower RSI threshold
+    50.0, 50.0 // Very wide stochastic zones
+);
     } 
     else {
         std::cerr << "Unknown strategy: " << strategyName << "\n";
@@ -121,15 +132,15 @@ int main(int argc, char* argv[]){
     
     // backtester.finalise();
 
-    // std::cout<<"Total Return: "<<backtester.getTotalReturnPercent()<<"%"<<std::endl;
-    // std::cout<<"Number of Trades: "<< backtester.getNumberOfTrades()<<std::endl;
-    // std::cout<<"Final Capital: "<<backtester.getFinalCapital()<<"\n";
-    // std::cout<<"Sharpe Ratio: "<<backtester.getSharpeRatio() <<"\n";
-    // std::cout<<"Max Drawdown: "<<backtester.getMaxDrawdown() <<"\n";
-    // std::cout<<"Win Rate: "<<backtester.getWinRate() <<"\n";
-    // std::cout<<"Profit Factor: "<<backtester.getProfitFactor() <<"\n";
-    // std::cout<<"Avg Trade Duration: "<<backtester.getAvgTradeDuration() <<"\n";
-    // std::cout<<"Avg Trade Return: "<<backtester.getAvgTradeReturn() <<"\n";
+    std::cout<<"Total Return: "<<backtester.getTotalReturnPercent()<<"%"<<std::endl;
+    std::cout<<"Number of Trades: "<< backtester.getNumberOfTrades()<<std::endl;
+    std::cout<<"Final Capital: "<<backtester.getFinalCapital()<<"\n";
+    std::cout<<"Sharpe Ratio: "<<backtester.getSharpeRatio() <<"\n";
+    std::cout<<"Max Drawdown: "<<backtester.getMaxDrawdown() <<"\n";
+    std::cout<<"Win Rate: "<<backtester.getWinRate() <<"\n";
+    std::cout<<"Profit Factor: "<<backtester.getProfitFactor() <<"\n";
+    std::cout<<"Avg Trade Duration: "<<backtester.getAvgTradeDuration() <<"\n";
+    std::cout<<"Avg Trade Return: "<<backtester.getAvgTradeReturn() <<"\n";
     // std::cout<< <<"\n";
 
     // backtester.getTrades();

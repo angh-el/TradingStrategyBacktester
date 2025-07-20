@@ -256,3 +256,95 @@ public:
 };
 
 #endif
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+#ifndef MYSTRATEGY_HPP
+#define MYSTRATEGY_HPP
+
+#include "IStrategy.hpp"
+#include "../indicators/IIndicator.hpp"
+#include <memory>
+
+class MyStrategy : public IStrategy {
+private:
+    int smaPeriod;
+    int bbPeriod;
+    double bbMultiplier;
+    int rsiPeriod;
+    int stochasticKPeriod;
+    int stochasticDPeriod;
+    int adxPeriod;
+    double minADXThreshold;
+
+    double rsiNeutralLevel;
+    double stochasticLowZone;
+    double stochasticHighZone;
+
+    double prevRSI;
+    double prevStochasticK;
+    double prevStochasticD;
+    double prevPrice;
+    bool hasPreviousValues;
+
+    bool inPosition;
+    double entryPrice;
+    SignalType currentPosition;
+
+    bool isTrendConfirmed(double price, double sma) const;
+    bool isRSICrossingAbove50(double currentRSI, double prevRSI) const;
+    bool isRSICrossingBelow50(double currentRSI, double prevRSI) const;
+    bool isBreakoutAboveUpperBB(double price, double upperBB) const;
+    bool isBreakoutBelowLowerBB(double price, double lowerBB) const;
+    bool isADXStrong(double adx) const;
+    bool isStochasticBullishCrossover(double currentK, double currentD, double prevK, double prevD) const;
+    bool isStochasticBearishCrossover(double currentK, double currentD, double prevK, double prevD) const;
+    bool isStochasticInLowZone(double k, double d) const;
+    bool isStochasticInHighZone(double k, double d) const;
+    
+    bool shouldExitAtMiddleBB(double price, double middleBB) const;
+    bool shouldExitOnRSIReversal(double currentRSI, double prevRSI, SignalType position) const;
+    bool shouldExitOnStochasticReversal(double currentK, double currentD, double prevK, double prevD, SignalType position) const;
+
+public:
+    MyStrategy(
+        int smaPer = 20,
+        int bbPer = 20, double bbMult = 2.0,
+        int rsiPer = 14,
+        int stochKPer = 14, int stochDPer = 3,
+        int adxPer = 14, double minADX = 15.0,
+        double rsiNeutral = 50.0,
+        double stochLow = 30.0, double stochHigh = 70.0
+    );
+
+    ~MyStrategy() = default;
+    Signal generateSignal(const Candle &candle, const IndicatorManager &indicators) override;
+    std::string getName() const override;
+    void reset() override;
+    
+    
+    int getSMAPeriod() const { return smaPeriod; }
+    int getBBPeriod() const { return bbPeriod; }
+    double getBBMultiplier() const { return bbMultiplier; }
+    int getRSIPeriod() const { return rsiPeriod; }
+    int getStochasticKPeriod() const { return stochasticKPeriod; }
+    int getStochasticDPeriod() const { return stochasticDPeriod; }
+    int getADXPeriod() const { return adxPeriod; }
+    double getMinADXThreshold() const { return minADXThreshold; }
+    bool isInPosition() const { return inPosition; }
+    SignalType getCurrentPosition() const { return currentPosition; }
+
+
+
+};  
+
+
+#endif
