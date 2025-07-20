@@ -20,6 +20,7 @@ def callCore(strategy):
     try:
         print("Running ",arg,"...")
         result = subprocess.run(["../core/main", arg], check=True)
+        # result = subprocess.run(["/app/core/main", arg], check=True)
         return result.returncode == 0  
     except subprocess.CalledProcessError as e:
         print(f"Subprocess failed: {e}")

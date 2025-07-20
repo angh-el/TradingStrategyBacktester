@@ -73,7 +73,7 @@ $(TARGET): $(OBJS)
 
 # Clean object files and binary
 clean:
-	-del /Q $(subst /,\,$(OBJS)) $(TARGET).exe 2>NUL
+	-del /Q $(subst /,\,$(OBJS))  2>NUL
 
 # Force rebuild
 rebuild: clean all
