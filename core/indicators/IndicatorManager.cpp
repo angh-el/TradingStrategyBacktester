@@ -22,7 +22,7 @@ IndicatorManager::IndicatorManager()
 
     
     sma = std::make_unique<SimpleMovingAverage>();
-    bb = std::make_unique<BollingerBands>(10, 2);
+    bb = std::make_unique<BollingerBands>(10, 4);
     rsi = std::make_unique<RelativeStrengthIndex>();
     stochastic = std::make_unique<Stochastic>();
     adx = std::make_unique<AverageDirectionalIndex>();
