@@ -8,7 +8,8 @@ def callCore(strategy):
         "Simple Moving Average Crossover": "sma",
         "Bollinger Band Mean Reversion": "bollinger",
         "Stochastic Oscillator Crossover": "stochastic",
-        "Relative Strength Index Mean Reversion": "rsi"
+        "Relative Strength Index Mean Reversion": "rsi",
+        "My Strategy":"my-strat"
     }
 
     arg = strategy_map.get(strategy)

@@ -324,7 +324,7 @@ export default function ResultsPage() {
                     range:[178, 195],
           },
         }}
-        // style={{ width: "100%" }}
+        style={{ width: "100%" }}
       />
 
       {/* Indicators Chart */}
@@ -378,8 +378,8 @@ export default function ResultsPage() {
       />
 
 
-      <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
-  {/* Trades Table */}
+      {/* <div style={{ display: "flex", gap: "20px", marginTop: "20px" }}>
+  Trades Table
   <div style={{ flex: 2 }}>
     <h3>Trades</h3>
     <table style={{ width: "100%", borderCollapse: "collapse" }}>
@@ -416,7 +416,7 @@ export default function ResultsPage() {
   </div>
 
 
-{/* Metrics Panel */}
+
 <div style={{
   flex: 1,
   border: "1px solid #ccc",
@@ -427,7 +427,6 @@ export default function ResultsPage() {
   overflowY: "auto"
 }}>
   <h3>Final Metrics</h3>
-  {/* metrics = ["Start capital", "Total return", "Sharpe ratio", "Max drawdown", "Win rate", "Profit factor", "Avg trade return", "Number of trades", "Avg trade duration", "Greatest win", "Greatest loss", "Max continous wins", "Max continous losses"] */}
   <ul style={{ listStyle: "none", padding: 0 }}>
     <li><strong>Start capital: </strong>{metricsMap["Start capital"]}</li>
     <li><strong>Total return: </strong> {metricsMap["Total return"]}  <>%</></li>
@@ -446,7 +445,93 @@ export default function ResultsPage() {
   </ul>
 </div>
 
+</div> */}
+
+
+
+  {/* Container for Metrics + Trades Panels */}
+<div style={{
+  display: "flex",
+  gap: "1rem",
+  marginTop: "2rem",
+  alignItems: "flex-start"
+}}>
+  
+  {/* Metrics Panel */}
+  <div style={{
+    flex: 1,
+    border: "1px solid #ccc",
+    padding: "10px",
+    borderRadius: "8px",
+    backgroundColor: "#f9f9f9",
+    maxHeight: "400px",
+    overflowY: "auto"
+  }}>
+    <h3>Final Metrics</h3>
+    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+      <li><strong>Start capital:</strong> {metricsMap["Start capital"]}</li>
+      <li><strong>Total return:</strong> {metricsMap["Total return"]}%</li>
+      <li><strong>Sharpe Ratio:</strong> {metricsMap["Sharpe ratio"]}</li>
+      <li><strong>Max drawdown:</strong> {metricsMap["Max drawdown"]}</li>
+      <li><strong>Win Rate:</strong> {metricsMap["Win rate"]}%</li>
+      <li><strong>Profit factor:</strong> {metricsMap["Profit factor"]}</li>
+      <li><strong>Avg trade return:</strong> {metricsMap["Avg trade return"]}</li>
+      <li><strong>Number of trades:</strong> {metricsMap["Number of trades"]}</li>
+      <li><strong>Avg trade duration:</strong> {metricsMap["Avg trade duration"]}</li>
+      <li><strong>Greatest win:</strong> {metricsMap["Greatest win"]}</li>
+      <li><strong>Greatest loss:</strong> {metricsMap["Greatest loss"]}</li>
+      <li><strong>Max continous wins:</strong> {metricsMap["Max continous wins"]}</li>
+      <li><strong>Max continous losses:</strong> {metricsMap["Max continous losses"]}</li>
+    </ul>
+  </div>
+
+  {/* Trades Table Panel */}
+  <div style={{
+    flex: 2,
+    border: "1px solid #ccc",
+    padding: "10px",
+    borderRadius: "8px",
+    backgroundColor: "#f9f9f9",
+    maxHeight: "400px",
+    overflowY: "auto"
+  }}>
+    <h3>Trades</h3>
+    <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9rem" }}>
+      <thead style={{ position: "sticky", top: 0, backgroundColor: "#eee", zIndex: 1 }}>
+        <tr>
+          <th style={{ borderBottom: "1px solid #ccc", padding: "6px" }}>Entry Time</th>
+          <th style={{ borderBottom: "1px solid #ccc", padding: "6px" }}>Exit Time</th>
+          <th style={{ borderBottom: "1px solid #ccc", padding: "6px" }}>Entry Price</th>
+          <th style={{ borderBottom: "1px solid #ccc", padding: "6px" }}>Exit Price</th>
+          <th style={{ borderBottom: "1px solid #ccc", padding: "6px" }}>PnL</th>
+          <th style={{ borderBottom: "1px solid #ccc", padding: "6px" }}>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        {data.trades.map((trade, index) => (
+          <tr key={index}>
+            <td style={{ padding: "6px", borderBottom: "1px solid #eee" }}>{trade["Entry time"]}</td>
+            <td style={{ padding: "6px", borderBottom: "1px solid #eee" }}>{trade["Exit time"]}</td>
+            <td style={{ padding: "6px", borderBottom: "1px solid #eee" }}>{trade["Entry price"]}</td>
+            <td style={{ padding: "6px", borderBottom: "1px solid #eee" }}>{trade["Exit price"]}</td>
+            <td style={{
+              padding: "6px",
+              borderBottom: "1px solid #eee",
+              color: trade["PnL"] > 0 ? "green" : trade["PnL"] < 0 ? "red" : "gray",
+              fontWeight: "bold"
+            }}>
+              {trade["PnL"]}
+            </td>
+            <td style={{ padding: "6px", borderBottom: "1px solid #eee" }}>{trade["Duration"]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
 </div>
+
+
 
 
 
