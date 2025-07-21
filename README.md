@@ -31,3 +31,7 @@ A high-performance trading strategy backtester designed for rapid analysis of al
 - **C++** - Core backtesting logic
 - **Docker** - Containerisation
 
+
+
+## Usage 
+
