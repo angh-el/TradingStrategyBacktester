@@ -33,5 +33,10 @@ A high-performance trading strategy backtester designed for rapid analysis of al
 
 
 
-## Usage 
+## 💻 Usage 
+```bash
+docker-compose up --build
+```
+Then open your browser at http://localhost:3000
+
 
